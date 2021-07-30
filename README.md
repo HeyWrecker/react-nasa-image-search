@@ -1,4 +1,9 @@
 # react-nasa-image-search
+This is a sample React / Semantic UI project that utilizes the public [NASA Image and Video Library](https://api.nasa.gov/) to perform a basic image search.
+* The search input switches to a loading state when the search button is clicked.
+* The search button switches to a disabled state while the data is being fetched via Axios.
+* Once the state is no longer loading, the search results are output using a Semantic UI Card Group and Cards.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
