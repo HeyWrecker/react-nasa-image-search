@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
 import {
@@ -9,15 +7,10 @@ import {
   Container,
   Grid,
   Header,
-  Icon,
   Image,
-  Item,
-  Label,
-  Menu,
-  Segment,
-  Step,
-  Table,
+  List,
   Input,
+  Card
 } from 'semantic-ui-react'
 
 function SearchInput(props) {
@@ -95,10 +88,43 @@ class App extends React.Component {
   render() {
       const currentSearchTerm = this.state.searchTerm;
       const isLoading = this.state.isLoading;
+      const searchResults = this.state.searchResults;
+      const cards = searchResults.map((item) => {
+        if (item.links !== undefined) {
+          const id = item.data[0].nasa_id;
+          const title = item.data[0].title ? item.data[0].title : 'N/A';
+          const photographer = item.data[0].photographer ? item.data[0].photographer : 'Unknown';
+          const location = item.data[0].location ? item.data[0].location : 'Unknown';
+          const previewSrc = item.links[0].href;
+
+          return (
+            <Card key={id} className="fluid">
+              <Image size="medium" src={previewSrc} wrapped ui={false} />
+              <Card.Content>
+                <Card.Header>
+                  {title}
+                </Card.Header>
+              </Card.Content>
+              <Card.Content extra textAlign="left">
+                <List>
+                  <List.Item>
+                    <b>Photographer:</b> {photographer}
+                  </List.Item>
+                  <List.Item>
+                    <b>Location:</b> {location}
+                  </List.Item>
+                </List>
+              </Card.Content>
+            </Card>
+          )
+        } else {
+          return null
+        }
+      });
 
       return (
         <div className="App">
-          <Container text>
+          <Container>
             <Header as='h2'>
                 NASA Image Search
             </Header>
@@ -114,6 +140,10 @@ class App extends React.Component {
                               disabled={isLoading} />
               </Grid.Column>
             </Grid>
+
+            <Card.Group itemsPerRow={3} stackable={true} doubling={true}>
+              {cards}
+            </Card.Group>
           </Container>
         </div>
       );
